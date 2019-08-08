@@ -35,13 +35,17 @@ bool CreateAListOfPathFromGivenExt(string directory,string extension,vector<stri
 	cout << count << endl;
 	for (size_t i = 0; i < count; i++) {
 		nameVector.push_back(fn[i]);
-		//nameVector.push_back(imread(fn[i]));
 	}
 	return true;
 }
 
-bool seperateImageNameFromDir() {
-
+bool seperateImageNameFromDir(string dir,string &name) {
+	char sep = '/';
+	size_t i = dir.rfind(sep, dir.length());
+	cout << i << endl;
+	if (i != string::npos) {
+		name=dir.substr(i + 1, dir.length() - i);
+	}
 	return true;
 }
 
@@ -97,7 +101,7 @@ int main(int argc, char** argv) {
 		// example :
 		// a directory : C:\Users\mimtiaz\visualStudio17Projects\getMeHired\computerVision\standredImages\baboon.bmp
 		//the seperateImageNameFromDir() function will seperate the baboon.bmp name from the main direcorty and put them in name variable
-		//seperateImageNameFromDir(imageList[i], name);
+		seperateImageNameFromDir(imageList[i], name);
 
 		string windowName = "Original Image";
 		namedWindow(windowName, WINDOW_AUTOSIZE);
@@ -112,4 +116,4 @@ int main(int argc, char** argv) {
 
 
 	return 0;
-}*/
+}
