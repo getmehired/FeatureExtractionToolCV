@@ -2,12 +2,10 @@
 #include <string>
 #include <Windows.h>
 #include <vector>
+#include<direct.h>
 #include <opencv2/opencv.hpp>
-
 using namespace std;
 using namespace cv;
-
-
 
 
 /*
@@ -15,10 +13,12 @@ using namespace cv;
 	dir -> given dir
 	folderName -> new folder name
 	outputDir -> updated directory
-*/
+	*/
+bool CreateFolderInsideDir(string dir, string folderName,string  & outputDir) {
 
-bool CreateFolderInsideDir() {
-
+	string path = dir+folderName+"//";
+	_mkdir(path.c_str());
+	outputDir = path;
 	return true;
 }
 
@@ -28,8 +28,15 @@ directory -> the directory where the images are located
 extension -> image extension example:: ".png"
 nameVector -> it will hold all the images full reading path
 */
-bool CreateAListOfPathFromGivenExt() {
-
+bool CreateAListOfPathFromGivenExt(string directory,string extension,vector<string>&nameVector) {
+	vector<cv::String> fn;
+	glob(directory+"*.png", fn, false);
+	size_t count = fn.size(); //number of png files in images folder
+	cout << count << endl;
+	for (size_t i = 0; i < count; i++) {
+		nameVector.push_back(fn[i]);
+		//nameVector.push_back(imread(fn[i]));
+	}
 	return true;
 }
 
@@ -58,8 +65,6 @@ int main(int argc, char** argv) {
 	string updatedFolderDir, name;
 	vector<string> imageList;
 	bool error1 = false, error2 = false;
-
-	/*
 	
 	//it will find all the images with the given extension and list them in the vector imageList
 	error1 = CreateAListOfPathFromGivenExt(inputDir, ext, imageList);
@@ -92,7 +97,7 @@ int main(int argc, char** argv) {
 		// example :
 		// a directory : C:\Users\mimtiaz\visualStudio17Projects\getMeHired\computerVision\standredImages\baboon.bmp
 		//the seperateImageNameFromDir() function will seperate the baboon.bmp name from the main direcorty and put them in name variable
-		seperateImageNameFromDir(imageList[i], name);
+		//seperateImageNameFromDir(imageList[i], name);
 
 		string windowName = "Original Image";
 		namedWindow(windowName, WINDOW_AUTOSIZE);
@@ -104,8 +109,7 @@ int main(int argc, char** argv) {
 		}
 	}
 	
-	*/
 
 
 	return 0;
-}
+}*/
