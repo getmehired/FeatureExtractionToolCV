@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
 	vector<string> imageList;
 	bool error1 = false, error2 = false;
 
-	/*
+	
 	
 	//it will find all the images with the given extension and list them in the vector imageList
 	error1 = CreateAListOfPathFromGivenExt(inputDir, ext, imageList);
@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
 		}
 	}
 	
-	*/
+	
 
 
 	return 0;
