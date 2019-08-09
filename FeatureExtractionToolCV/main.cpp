@@ -8,6 +8,22 @@ using namespace std;
 using namespace cv;
 
 
+/*
+Write this following function for a given image and ranges of min and max -> L , A, B value
+it can segment particular color object from the image
+*/
+void runColorSegmentationUsingLAB() {
+
+}
+
+/*
+Write this following function for a given image and ranges of min and max -> H, S, V value
+it can segment particular color object from the image
+*/
+void runColorSegmentationUsingHSV() {
+
+}
+
 
 int main(int argc, char** argv) {
 
