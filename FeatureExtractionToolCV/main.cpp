@@ -1,50 +1,23 @@
 #include <iostream>
 #include <string>
 #include <Windows.h>
-#include <vector>
 #include <opencv2/opencv.hpp>
+#include "utilities.h"
 
 using namespace std;
 using namespace cv;
 
 
 
-
-/*
-	CreateFolderInsideDir-> create a folder inside the given directory and update the outputPath
-	dir -> given dir
-	folderName -> new folder name
-	outputDir -> updated directory
-*/
-
-bool CreateFolderInsideDir() {
-
-	return true;
-}
-
-/*
-CreateAListOfPathFromGivenExt - > create path of all the imges from a given directory, image extension and save the path in a vector
-directory -> the directory where the images are located
-extension -> image extension example:: ".png"
-nameVector -> it will hold all the images full reading path
-*/
-bool CreateAListOfPathFromGivenExt() {
-
-	return true;
-}
-
-bool seperateImageNameFromDir() {
-
-	return true;
-}
-
 int main(int argc, char** argv) {
 
+	//Checking number of different argumnets
 	cout << "You have entered " << argc << " arguments:" << "\n";
 
 	for (int i = 0; i < argc; ++i)
 		cout << argv[i] << "\n";
 
+	//Throwing out the argumnet expectations
 	if (argc == 1) {
 		printf("Error: found in input arguments! \n");
 		printf("Expected: 1st input argument the directory of images \n");
@@ -59,17 +32,21 @@ int main(int argc, char** argv) {
 	vector<string> imageList;
 	bool error1 = false, error2 = false;
 
-	/*
-	
-	//it will find all the images with the given extension and list them in the vector imageList
-	error1 = CreateAListOfPathFromGivenExt(inputDir, ext, imageList);
+	//Initializing the utilities object
+	utilities utl;
+
+
+	//creating list of images with given ext
+	error1 = utl.CreateAListOfPathFromGivenExt(inputDir, ext, imageList);
+
 	if (!error1) {
 		printf("Failed during the task of retriving list of images from a folder\n");
 		return 0;
 	}
 
-	//it will use the given directory and create another folder named savedImages
-	error2 = CreateFolderInsideDir(inputDir, "savedImages", updatedFolderDir);
+	//Creating a folder for saving processed output
+	error2 = utl.CreateFolderInsideDir(inputDir, "savedImages", updatedFolderDir);
+
 
 	if (!error2) {
 		printf("Failed during the task of creating output processed folders\n");
@@ -79,6 +56,7 @@ int main(int argc, char** argv) {
 	cv::Mat srcImg;
 	char key;
 
+	//looping through the imageList vector
 	for (int i = 0; i < imageList.size(); i++) {
 		srcImg = imread(imageList[i], IMREAD_COLOR);
 
@@ -88,11 +66,9 @@ int main(int argc, char** argv) {
 			return 0;
 		}
 
-		//it will take each directory from the vector and seperate the name of the imge from the direcory
-		// example :
-		// a directory : C:\Users\mimtiaz\visualStudio17Projects\getMeHired\computerVision\standredImages\baboon.bmp
-		//the seperateImageNameFromDir() function will seperate the baboon.bmp name from the main direcorty and put them in name variable
-		seperateImageNameFromDir(imageList[i], name);
+
+		utl.seperateImageNameFromDir(imageList[i], name);
+		//seperateImageNameFromDir(imageList[i], name);
 
 		string windowName = "Original Image";
 		namedWindow(windowName, WINDOW_AUTOSIZE);
@@ -103,9 +79,6 @@ int main(int argc, char** argv) {
 			imwrite(updatedFolderDir + "\\" + name + ".png", srcImg);
 		}
 	}
-	
-	*/
-
 
 	return 0;
 }
