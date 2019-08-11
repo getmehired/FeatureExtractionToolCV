@@ -17,10 +17,15 @@ using namespace cv;
 	folderName -> new folder name
 	outputDir -> updated directory
 */
-
 bool CreateFolderInsideDir(string& dir, string folderName, string& outputDir) {
-	outputDir = dir + "\\" + folderName;
-	return (_mkdir(outputDir.c_str()) == 0);
+	try {
+		outputDir = dir + "\\" + folderName;
+		_mkdir(outputDir.c_str());
+		return true;
+	}
+	catch (...) { // catch all - if error it means failure
+		return false;
+	}
 }
 
 /*
@@ -33,15 +38,31 @@ bool CreateAListOfPathFromGivenExt(string& directory, string& extension, vector<
 	try {
 		glob(directory + "\\*" + extension, nameVector, false); // no clear documentation of this func for c++ win...
 	}
-	catch (...) {
+	catch (...) { // catch all - if error it means failure
 		return false;
 	}
 	return true;
 }
 
-bool seperateImageNameFromDir() {
-
-	return true;
+/*
+seperateImageNameFromDir - > get the filename from a complete file path
+file_path -> the full path where the image is located
+file_name -> image name
+*/
+bool seperateImageNameFromDir(string& file_path, string& file_name) {
+	// go backwards until a '/' is reached
+	try {
+		size_t idx = file_path.length() - 1;
+		file_name = "";
+		while (idx >= 0 && file_path[idx] != '\\') {
+			file_name = file_path[idx] + file_name;
+			idx--;
+		}
+		return true;
+	}
+	catch (...) { // catch all - if error it means failure
+		return false;
+	}
 }
 
 int main(int argc, char** argv) {
@@ -81,7 +102,7 @@ int main(int argc, char** argv) {
 		printf("Failed during the task of creating output processed folders\n");
 		return 0;
 	}
-	/*
+
 	cv::Mat srcImg;
 	char key;
 
@@ -100,7 +121,7 @@ int main(int argc, char** argv) {
 		//the seperateImageNameFromDir() function will seperate the baboon.bmp name from the main direcorty and put them in name variable
 		seperateImageNameFromDir(imageList[i], name);
 
-		string windowName = "Original Image";
+		string windowName = name;
 		namedWindow(windowName, WINDOW_AUTOSIZE);
 		imshow(windowName, srcImg);
 		key = waitKey();
@@ -109,10 +130,6 @@ int main(int argc, char** argv) {
 			imwrite(updatedFolderDir + "\\" + name + ".png", srcImg);
 		}
 	}
-	*/
-	
-
-
 
 	return 0;
 }
