@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <vector>
 #include <opencv2/opencv.hpp>
+#include <direct.h>
 
 using namespace std;
 using namespace cv;
@@ -17,9 +18,9 @@ using namespace cv;
 	outputDir -> updated directory
 */
 
-bool CreateFolderInsideDir() {
-
-	return true;
+bool CreateFolderInsideDir(string& dir, string folderName, string& outputDir) {
+	outputDir = dir + "\\" + folderName;
+	return (_mkdir(outputDir.c_str()) == 0);
 }
 
 /*
@@ -73,9 +74,6 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 
-	for (size_t i = 0; i < imageList.size(); i++)
-		cout << imageList[i] << endl;
-	/*
 	//it will use the given directory and create another folder named savedImages
 	error2 = CreateFolderInsideDir(inputDir, "savedImages", updatedFolderDir);
 
@@ -83,7 +81,7 @@ int main(int argc, char** argv) {
 		printf("Failed during the task of creating output processed folders\n");
 		return 0;
 	}
-
+	/*
 	cv::Mat srcImg;
 	char key;
 
