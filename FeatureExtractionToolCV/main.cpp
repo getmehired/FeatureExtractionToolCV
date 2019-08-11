@@ -28,8 +28,13 @@ directory -> the directory where the images are located
 extension -> image extension example:: ".png"
 nameVector -> it will hold all the images full reading path
 */
-bool CreateAListOfPathFromGivenExt() {
-
+bool CreateAListOfPathFromGivenExt(string& directory, string& extension, vector<string>& nameVector) {
+	try {
+		glob(directory + "\\*" + extension, nameVector, false); // no clear documentation of this func for c++ win...
+	}
+	catch (...) {
+		return false;
+	}
 	return true;
 }
 
@@ -49,7 +54,7 @@ int main(int argc, char** argv) {
 		printf("Error: found in input arguments! \n");
 		printf("Expected: 1st input argument the directory of images \n");
 		printf("Expected: 2nd input argument the extension of the images that need to be processed \n");
-		printf("Example c:\imageDatabase .jpg\n");
+		printf("Example c:\\imageDatabase .jpg\n");
 		return 0;
 	}
 
@@ -59,7 +64,7 @@ int main(int argc, char** argv) {
 	vector<string> imageList;
 	bool error1 = false, error2 = false;
 
-	/*
+
 	
 	//it will find all the images with the given extension and list them in the vector imageList
 	error1 = CreateAListOfPathFromGivenExt(inputDir, ext, imageList);
@@ -68,6 +73,9 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 
+	for (size_t i = 0; i < imageList.size(); i++)
+		cout << imageList[i] << endl;
+	/*
 	//it will use the given directory and create another folder named savedImages
 	error2 = CreateFolderInsideDir(inputDir, "savedImages", updatedFolderDir);
 
@@ -103,8 +111,9 @@ int main(int argc, char** argv) {
 			imwrite(updatedFolderDir + "\\" + name + ".png", srcImg);
 		}
 	}
-	
 	*/
+	
+
 
 
 	return 0;
