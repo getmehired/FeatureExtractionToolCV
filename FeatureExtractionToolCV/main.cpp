@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
 		printf("Error: found in input arguments! \n");
 		printf("Expected: 1st input argument the directory of images \n");
 		printf("Expected: 2nd input argument the extension of the images that need to be processed \n");
-		printf("Example c:\imageDatabase .jpg\n");
+		printf("Example c:\\imageDatabase .jpg\n");
 		return 0;
 	}
 

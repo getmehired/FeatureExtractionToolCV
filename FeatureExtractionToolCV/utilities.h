@@ -2,10 +2,12 @@
 #include <string>
 #include <vector>
 #include <Windows.h>
-//#include <opencv2/opencv.hpp>
+#include <direct.h>
+#include <iostream>
+#include <opencv2/opencv.hpp>
 
-
-
+using namespace std;
+using namespace cv;
 
 class utilities {
 private:
