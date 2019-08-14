@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <vector>
 #include <opencv2/opencv.hpp>
+#include <direct.h>
 
 using namespace std;
 using namespace cv;
@@ -17,8 +18,9 @@ using namespace cv;
 	outputDir -> updated directory
 */
 
-bool CreateFolderInsideDir() {
-
+bool CreateFolderInsideDir(string& dir, string folderName, string& outputDir) {
+	outputDir = dir + "\\" + folderName;
+	_mkdir(outputDir.c_str());
 	return true;
 }
 
@@ -28,13 +30,36 @@ directory -> the directory where the images are located
 extension -> image extension example:: ".png"
 nameVector -> it will hold all the images full reading path
 */
-bool CreateAListOfPathFromGivenExt() {
-
-	return true;
+bool CreateAListOfPathFromGivenExt(string directory, string extension, vector<string>& nameVector) {
+	bool statusCreated = false;
+	string fullPath = directory + "\\*" + extension;
+	WIN32_FIND_DATAA data;
+	HANDLE hFind;
+	if ((hFind = FindFirstFileA(fullPath.c_str(), &data)) != INVALID_HANDLE_VALUE) {
+		do {
+			nameVector.push_back(directory + "\\" + data.cFileName);
+		} while (FindNextFileA(hFind, &data) != 0);
+		FindClose(hFind);
+		statusCreated = true;
+	}
+	return statusCreated;
 }
 
-bool seperateImageNameFromDir() {
-
+bool seperateImageNameFromDir(string dir, string& fileName) {
+	fileName = "";
+	size_t i = dir.length() - 1;
+	while (i >= 0 && dir[i] != '\\') {
+		fileName = dir[i] + fileName;
+		i--;
+	}
+	int locDot = fileName.find_last_of(".");
+	cout << fileName << endl;
+	if (locDot == -1) {
+		return false;
+	}
+	int fileNameLength = fileName.length() - 1;
+	fileName.replace(locDot, fileNameLength, "");
+	cout << fileName << endl;
 	return true;
 }
 
@@ -59,7 +84,6 @@ int main(int argc, char** argv) {
 	vector<string> imageList;
 	bool error1 = false, error2 = false;
 
-	/*
 	
 	//it will find all the images with the given extension and list them in the vector imageList
 	error1 = CreateAListOfPathFromGivenExt(inputDir, ext, imageList);
@@ -104,7 +128,6 @@ int main(int argc, char** argv) {
 		}
 	}
 	
-	*/
 
 
 	return 0;
