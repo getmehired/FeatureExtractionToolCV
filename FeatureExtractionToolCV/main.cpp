@@ -12,16 +12,22 @@ using namespace cv;
 Write this following function for a given image and ranges of min and max -> L , A, B value
 it can segment particular color object from the image
 */
-void runColorSegmentationUsingLAB() {
-
+Mat runColorSegmentationUsingLAB(Mat img, int min_L, int max_L, int min_A, int max_A, int min_B, int max_B) {
+	cv::Mat img_LAB, img_LAB_seg;
+	cv::cvtColor(img, img_LAB, cv::COLOR_BGR2Lab);
+	cv::inRange(img_LAB, cv::Scalar(min_L, min_A, min_B), cv::Scalar(max_L, max_A, max_B), img_LAB_seg);
+	return img_LAB_seg;
 }
 
 /*
 Write this following function for a given image and ranges of min and max -> H, S, V value
 it can segment particular color object from the image
 */
-void runColorSegmentationUsingHSV() {
-
+Mat runColorSegmentationUsingHSV(Mat img, int min_H, int max_H, int min_S, int max_S, int min_V, int max_V) {
+	cv::Mat img_HSV, img_HSV_seg;
+	cv::cvtColor(img, img_HSV, cv::COLOR_BGR2HSV);
+	cv::inRange(img_HSV, cv::Scalar(min_H, min_S, min_V), cv::Scalar(max_H, max_S, max_V), img_HSV_seg);
+	return img_HSV_seg;
 }
 
 
