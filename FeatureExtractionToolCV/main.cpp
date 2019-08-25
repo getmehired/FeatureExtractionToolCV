@@ -12,16 +12,32 @@ using namespace cv;
 Write this following function for a given image and ranges of min and max -> L , A, B value
 it can segment particular color object from the image
 */
-void runColorSegmentationUsingLAB() {
-
+Mat runColorSegmentationUsingLAB(Mat& img, int LMin, int LMax, int aMin, int aMax, int bMin, int bMax) {
+	Mat imageLab, maskLab, resultLab;
+	Scalar minLab, maxLab;
+	minLab = Scalar(LMin, aMin, bMin);
+	maxLab = Scalar(LMax, aMax, bMax);
+	cvtColor(img, imageLab, COLOR_BGR2HSV);
+	inRange(imageLab, minLab, maxLab, maskLab);
+	resultLab = Mat::zeros(img.rows, img.cols, CV_8UC3);
+	bitwise_and(img, img, resultLab, maskLab);
+	return resultLab;
 }
 
 /*
 Write this following function for a given image and ranges of min and max -> H, S, V value
 it can segment particular color object from the image
 */
-void runColorSegmentationUsingHSV() {
-
+Mat runColorSegmentationUsingHSV(Mat& img, int HMin, int HMax, int SMin, int SMax, int VMin, int VMax) {
+	Mat imageHSV, maskHSV, resultHSV;
+	Scalar minHSV, maxHSV;
+	minHSV = Scalar(HMin, SMin, VMin);
+	maxHSV = Scalar(HMax, SMax, VMax);
+	cvtColor(img, imageHSV, COLOR_BGR2HSV);
+	inRange(imageHSV, minHSV, maxHSV, maskHSV);
+	resultHSV = Mat::zeros(img.rows, img.cols, CV_8UC3);
+	bitwise_and(img, img, resultHSV, maskHSV);
+	return resultHSV;
 }
 
 
@@ -89,6 +105,8 @@ int main(int argc, char** argv) {
 		string windowName = "Original Image";
 		namedWindow(windowName, WINDOW_AUTOSIZE);
 		imshow(windowName, srcImg);
+		imshow("HSV", runColorSegmentationUsingHSV(srcImg, 46, 95, 156, 255, 99, 181)); //given range, need to be adjusted
+		imshow("LAB", runColorSegmentationUsingLAB(srcImg, 82, 115, 52, 118, 137, 203)); //given range, need to be adjusted
 		key = waitKey();
 
 		if (key == 's') {
