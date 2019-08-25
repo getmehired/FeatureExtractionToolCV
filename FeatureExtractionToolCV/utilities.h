@@ -2,7 +2,13 @@
 #include <string>
 #include <vector>
 #include <Windows.h>
-//#include <opencv2/opencv.hpp>
+#include <opencv2/opencv.hpp>
+#include <iostream>
+#include <direct.h>
+
+using namespace std;
+using namespace cv;
+
 
 
 
