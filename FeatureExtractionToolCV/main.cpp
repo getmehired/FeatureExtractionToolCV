@@ -12,15 +12,14 @@ using namespace cv;
 Write this following function for a given image and ranges of min and max -> L , A, B value
 it can segment particular color object from the image
 */
-Mat runColorSegmentationUsingLAB(Mat& img, int LMin, int LMax, int aMin, int aMax, int bMin, int bMax) {
+Mat runColorSegmentationUsingLAB(Mat * img, int LMin, int LMax, int aMin, int aMax, int bMin, int bMax) {
 	Mat imageLab, maskLab, resultLab;
 	Scalar minLab, maxLab;
 	minLab = Scalar(LMin, aMin, bMin);
 	maxLab = Scalar(LMax, aMax, bMax);
-	cvtColor(img, imageLab, COLOR_BGR2HSV);
+	cvtColor(*img, imageLab, COLOR_BGR2HSV);
 	inRange(imageLab, minLab, maxLab, maskLab);
-	resultLab = Mat::zeros(img.rows, img.cols, CV_8UC3);
-	bitwise_and(img, img, resultLab, maskLab);
+	bitwise_and(*img, *img, resultLab, maskLab);
 	return resultLab;
 }
 
@@ -28,15 +27,14 @@ Mat runColorSegmentationUsingLAB(Mat& img, int LMin, int LMax, int aMin, int aMa
 Write this following function for a given image and ranges of min and max -> H, S, V value
 it can segment particular color object from the image
 */
-Mat runColorSegmentationUsingHSV(Mat& img, int HMin, int HMax, int SMin, int SMax, int VMin, int VMax) {
+Mat runColorSegmentationUsingHSV(Mat * img, int HMin, int HMax, int SMin, int SMax, int VMin, int VMax) {
 	Mat imageHSV, maskHSV, resultHSV;
 	Scalar minHSV, maxHSV;
 	minHSV = Scalar(HMin, SMin, VMin);
 	maxHSV = Scalar(HMax, SMax, VMax);
-	cvtColor(img, imageHSV, COLOR_BGR2HSV);
+	cvtColor(*img, imageHSV, COLOR_BGR2HSV);
 	inRange(imageHSV, minHSV, maxHSV, maskHSV);
-	resultHSV = Mat::zeros(img.rows, img.cols, CV_8UC3);
-	bitwise_and(img, img, resultHSV, maskHSV);
+	bitwise_and(*img, *img, resultHSV, maskHSV);
 	return resultHSV;
 }
 
@@ -113,8 +111,8 @@ int main(int argc, char** argv) {
 				- opencvS = (gimpS / 100) * 255
 				- opencvV = (gimpV / 100) * 255
 		*/
-		imshow("HSV", runColorSegmentationUsingHSV(srcImg, 54, 67, 168, 231, 63, 158));
-		imshow("LAB", runColorSegmentationUsingLAB(srcImg, 82, 115, 52, 118, 137, 203)); //range given in the HW pdf
+		imshow("HSV", runColorSegmentationUsingHSV(&srcImg, 54, 67, 168, 231, 63, 158));
+		imshow("LAB", runColorSegmentationUsingLAB(&srcImg, 82, 115, 52, 118, 137, 203)); //range given in the HW pdf
 		key = waitKey();
 
 		if (key == 's') {
