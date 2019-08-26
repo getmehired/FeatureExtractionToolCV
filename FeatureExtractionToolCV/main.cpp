@@ -105,8 +105,16 @@ int main(int argc, char** argv) {
 		string windowName = "Original Image";
 		namedWindow(windowName, WINDOW_AUTOSIZE);
 		imshow(windowName, srcImg);
-		imshow("HSV", runColorSegmentationUsingHSV(srcImg, 46, 95, 156, 255, 99, 181)); //given range, need to be adjusted
-		imshow("LAB", runColorSegmentationUsingLAB(srcImg, 82, 115, 52, 118, 137, 203)); //given range, need to be adjusted
+		//imshow("HSV", runColorSegmentationUsingHSV(srcImg, 46, 95, 156, 255, 99, 181)); //range given in the HW pdf
+		/*
+			- analysis using HSV value range (in GIMP pointer information)
+			- HSV values conversion from GIMP to openCV:
+				- opencvH = gimpH / 2
+				- opencvS = (gimpS / 100) * 255
+				- opencvV = (gimpV / 100) * 255
+		*/
+		imshow("HSV", runColorSegmentationUsingHSV(srcImg, 54, 67, 168, 231, 63, 158));
+		imshow("LAB", runColorSegmentationUsingLAB(srcImg, 82, 115, 52, 118, 137, 203)); //range given in the HW pdf
 		key = waitKey();
 
 		if (key == 's') {
