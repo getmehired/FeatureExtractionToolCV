@@ -123,7 +123,7 @@ int main(int argc, char** argv) {
 		key = waitKey();
 		if (key == 's') {
 			String saveDir = updatedFolderDir + "\\" + name + ".bmp";
-			cout << saveDir << endl;
+			cout << "Image saved here: " << saveDir << endl;
 			imwrite(saveDir, srcImg);
 		}
 	}
