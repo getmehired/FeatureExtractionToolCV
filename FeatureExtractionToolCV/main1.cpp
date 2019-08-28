@@ -17,12 +17,12 @@ using namespace cv;
 	outputDir -> updated directory
 */
 
-bool CreateFolderInsideDir(String inputDir, String folderName, string& outDir) {
+bool CreateFolderInsideDir(String inputDir, String folderName, string& updatedFolderDir) {
 
 	String newOutDir = inputDir + folderName;
 	cv::utils::fs::createDirectory(newOutDir);
-	outDir = newOutDir;
-	cout << "Updated output folder name: " << outDir << endl;
+	updatedFolderDir = newOutDir;
+	cout << "Updated output folder name: " << updatedFolderDir << endl;
 	return true;
 }
 
@@ -122,9 +122,7 @@ int main(int argc, char** argv) {
 		imshow(windowName, srcImg);
 		key = waitKey();
 		if (key == 's') {
-			String saveDir = updatedFolderDir + "\\" + name + ".bmp";
-			cout << saveDir << endl;
-			imwrite(saveDir, srcImg);
+			imwrite(updatedFolderDir + "\\" + name + ".png", srcImg);
 		}
 	}
 
