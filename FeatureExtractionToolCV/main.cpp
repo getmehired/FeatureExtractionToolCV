@@ -10,8 +10,6 @@ using namespace std;
 using namespace cv;
 
 
-
-
 /*
 	CreateFolderInsideDir-> create a folder inside the given directory and update the outputPath
 	dir -> given dir
@@ -19,11 +17,12 @@ using namespace cv;
 	outputDir -> updated directory
 */
 
-bool CreateFolderInsideDir(String inputDir, String folderName, string updatedFolderDir) {
+bool CreateFolderInsideDir(String inputDir, String folderName, string &updatedFolderDir) {
 
-	String newOutDir = inputDir + folderName + "\\";
+	String newOutDir = inputDir + folderName;
 	cv::utils::fs::createDirectory(newOutDir);
 	updatedFolderDir = newOutDir;
+	cout << "Updated output folder name: " << updatedFolderDir << endl;
 	return true;
 }
 
@@ -34,12 +33,34 @@ extension -> image extension example:: ".png"
 nameVector -> it will hold all the images full reading path
 */
 bool CreateAListOfPathFromGivenExt(String imgDir, String imgExt, vector<string>&nameVector) {
-
+	vector<cv::String> imagesList;
+	//Search for all the image pathnames matching this pattern: imgDir + .png
+	//to be included in the vector imagesList, otherwise false 
+	glob(imgDir + "\\*" + imgExt, imagesList, false);
+	cout << imgDir + "\\*" + imgExt << endl;
+	//Check count of the files within imagesList
+	size_t cnt = imagesList.size();
+	cout << "Number of images: " << cnt << endl;
+	//Loop through the imagesList and add each of them to the nameVector
+	for (size_t i = 0; i < cnt; i++) {
+		nameVector.push_back(imagesList[i]);
+		cout << "Image filepath name: " << nameVector[i] << endl;
+	}
 
 	return true;
 }
 
 bool seperateImageNameFromDir(String imgDir, String &imgName) {
+	char sep = '/';
+#ifdef _WIN32
+	sep = '\\';
+#endif
+
+	size_t i = imgDir.rfind(sep, imgDir.length());
+	if (i != string::npos) {
+		imgName = imgDir.substr(i + 1, imgDir.length() - i);
+		cout << "Image name: " << imgName << endl;
+	}
 
 	return true;
 }
@@ -65,7 +86,6 @@ int main(int argc, char** argv) {
 	vector<string> imageList;
 	bool error1 = false, error2 = false;
 
-	
 
 	//it will find all the images with the given extension and list them in the vector imageList
 	error1 = CreateAListOfPathFromGivenExt(inputDir, ext, imageList);
@@ -74,7 +94,7 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 	//it will use the given directory and create another folder named savedImages
-	error2 = CreateFolderInsideDir(inputDir, "savedImages", updatedFolderDir);
+	error2 = CreateFolderInsideDir(inputDir, "_saved", updatedFolderDir);
 	if (!error2) {
 		printf("Failed during the task of creating output processed folders\n");
 		return 0;
@@ -98,7 +118,7 @@ int main(int argc, char** argv) {
 		imshow(windowName, srcImg);
 		key = waitKey();
 		if (key == 's') {
-			imwrite(updatedFolderDir + "\\" + name + ".png", srcImg);
+			imwrite(updatedFolderDir + "\\" + name, srcImg);
 		}
 	}
 
